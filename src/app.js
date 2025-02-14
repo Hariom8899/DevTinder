@@ -1,6 +1,36 @@
-console.log('Welcome to Home Page');
+
 const express = require('express');
 const app = express();
+
+app.get('/test', (req, res, next) => {
+    res.send(req.query);
+})
+
+//dynamic route
+app.get('/user/:id/:name', (req,res) => {
+    res.send(req.params);
+})
+
+//Middlewares
+app.use('/user',(req, res, next) => {
+console.log('First Handler');
+next();
+},
+
+(req, res, next) => {
+    console.log('Second Handler');
+    next();
+},
+
+(req, res, next) => {
+    console.log('Third Handler');
+    res.send('Response 3');
+}
+)
+
+
+
+
 
 
 //this will only handle http get request 
@@ -13,8 +43,6 @@ app.get('/home',(req, res) => {
 app.use('/test', (req, res) => {
     res.send('Test Success');
 })
-
-
 
 app.get('/user', (req, res) => {
     res.send({firstName:"hariom", lastName:"Tiwari"});
