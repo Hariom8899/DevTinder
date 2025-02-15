@@ -5,3 +5,8 @@ Order of Routes(/hello, /home , /about) matters a lot
 
 
 app.use('/user', [rh1, rh2, rh3], rh4, rh5) where rh = route hander or (req, res, next) => {}
+
+this the cluster url not of the dataBase -> 'mongodb+srv://hariomtiwari2288:iPe2ZgxeqnRQVRyR@hariomfirstdb.egr0c.mongodb.net'
+
+but adding /DB_Name will create a DataBase like below shown
+'mongodb+srv://hariomtiwari2288:iPe2ZgxeqnRQVRyR@hariomfirstdb.egr0c.mongodb.net/devTinder'
