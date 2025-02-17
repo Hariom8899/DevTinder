@@ -6,18 +6,23 @@ const app = express();
 
 app.post('/signup', async (req, res) => {
   const userObj = new User({
-    firstName:"Hariom",
+    firstName:"Yuraj Singh",
     lastName:"Tiwari",
-    emailId:"hariom@134",
+    emailId:"yuvi@134",
     password:"abc"
   })
-  await User.save;
-  res.send('User created SuccessFully!');
+  try{ 
+    await userObj.save();
+    res.send('User created SuccessFully!');
+  }catch(err){
+    res.status(400).send('Error Occured During Saving the User in DB ');
+  }
+ 
 })
 
 connectDB().then(() => {
 console.log('Connnection Established SuccessFully');
-app.listen(8080, () => console.log('Server Listening at Port 8080'));
+app.listen(7777, () => console.log('Server Listening at Port 7777'));
 })
 .catch((err) =>{
 console.log('Error Occured During DB Connection ' + err.message);
