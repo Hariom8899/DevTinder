@@ -39,6 +39,38 @@ app.get('/user', async (req, res) => {
   }
 })
 
+app.get('/feed', async (req, res) => {
+// {} to get all the users of Model
+  const users = await User.find({});
+  try{
+    res.send(users);
+  }
+  catch(err){
+    res.status(400).send('Error Occured in Feed' + err.message);
+  }
+})
+
+app.delete('/user', async (req, res) => {
+  const id = req.body._id;
+  try{
+  // const result = await User.findByIdAndDelete({_id:id});
+  const result = await User.findByIdAndDelete(id);
+    res.send("User Deleted SuccessFully!");
+  }catch(err){
+    res.status(400).send('Error Occured During Deletion: ' + err.message);
+  }
+})
+
+app.patch('/user', async (req, res) => {
+  const emailId = req.body.emailId;
+  try{
+    const res = await User.findByIdAndUpdate({_id:id});
+
+  }catch(err){
+    res.status(400).send('Erro Occured During User Updation:' + err.message);
+  }
+})
+
 connectDB().then(() => {
 console.log('Connnection Established SuccessFully');
 app.listen(7777, () => console.log('Server Listening at Port 7777'));
