@@ -11,3 +11,5 @@ this the cluster url not of the dataBase -> 'mongodb+srv://hariomtiwari2288:iPe2
 but adding /DB_Name will create a DataBase like below shown
 'mongodb+srv://hariomtiwari2288:iPe2ZgxeqnRQVRyR@hariomfirstdb.egr0c.mongodb.net/devTinder'
 always use async-await when dealing with DB operation also right the code in try-catch block
+
+app.use(express.json()) is middleware to convert the Json data to Js Obj and append it to the request Object
