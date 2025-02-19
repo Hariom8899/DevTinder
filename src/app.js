@@ -21,7 +21,7 @@ app.post('/signup', async (req, res) => {
     await userInstance.save();
     res.send('User created SuccessFully!');
   }catch(err){
-    res.status(400).send('Error Occured During Saving the User in DB ');
+    res.status(400).send('Error Occured During Saving the User in DB:' + err.message);
   }
  
 })
@@ -62,9 +62,10 @@ app.delete('/user', async (req, res) => {
 })
 
 app.patch('/user', async (req, res) => {
-  const emailId = req.body.emailId;
+  const _id = req.body.id;
   try{
-    const res = await User.findByIdAndUpdate({_id:id});
+    const result = await User.findByIdAndUpdate({_id:_id}, req.body, {returnDocument:"after"});
+    res.send(result);
 
   }catch(err){
     res.status(400).send('Erro Occured During User Updation:' + err.message);
