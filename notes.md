@@ -15,3 +15,4 @@ always use async-await when dealing with DB operation also right the code in try
 app.use(express.json()) is middleware to convert the Json data to Js Obj and append it to the request Object
 
 any other data which is not in the schema will gets ignored by the API's
+NEVER TRUST req.body
