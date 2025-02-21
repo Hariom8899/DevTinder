@@ -61,14 +61,26 @@ app.delete('/user', async (req, res) => {
   }
 })
 
-app.patch('/user', async (req, res) => {
-  const _id = req.body.id;
+app.patch('/user/:id', async (req, res) => {
+  const _id = req.params?.id;
   try{
-    const result = await User.findByIdAndUpdate({_id:_id}, req.body, {returnDocument:"after"});
-    res.send(result);
+    const ALLOWED_UPDATES = ["age", "skills", "firstName", "lastName", "gender", "aboutMe"];
+    const isAllwedUpdates = Object.keys(req.body).every((k) => ALLOWED_UPDATES.includes(k));
+    if(!isAllwedUpdates) {
+      throw new Error('U are violating the update constraints');
+    }
+    if(req.body?.skills.length>10){
+      throw new Error('Skills Can not be more than 10');
+    }
+
+    const result = await User.findByIdAndUpdate({_id:_id}, req.body, {
+    returnDocument:"after",
+    runValidators:true
+  });
+    res.send('User Updated Successfully!!');
 
   }catch(err){
-    res.status(400).send('Erro Occured During User Updation:' + err.message);
+    res.status(400).send('Error Occured During User Updation:' + err.message);
   }
 })
 
