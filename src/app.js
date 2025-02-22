@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.post('/signup', async (req, res) => {
   try{ 
+    console.log('IN SignUp route');
   //validation of data
   validateSignUpData(req);
 
@@ -34,6 +35,24 @@ app.post('/signup', async (req, res) => {
     res.status(400).send('Error Occured During Saving the User in DB:' + err.message);
   }
  
+})
+
+app.post('/login', async (req,res) => {
+  try{
+    const {emailId, password} = req.body;
+    const user = await User.findOne({emailId:emailId});
+    if(!user){
+      throw new Error('Invalid Credentials');
+    }
+    const isMatching = await bcrypt.compare(password, user.password);
+    if(!isMatching){
+      throw new Error('Invalid Credentials');
+    }
+    res.send('Login Successfully!!!')
+  }
+  catch(err){
+     res.status(404).send('Error Occured in Login:' + err.message);
+  }
 })
 
 app.get('/user', async (req, res) => {
