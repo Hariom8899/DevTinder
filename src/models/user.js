@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { default: isEmail } = require('validator/lib/isEmail');
 
 const userSchema = new mongoose.Schema({
@@ -60,6 +62,19 @@ const userSchema = new mongoose.Schema({
 },{
     timestamps:true,//to know the time of createdAt and UpdatedAt
 })
+//didn't use arrow function here as it will behaves differently with the this keyword
+//here this refers to the instance of the schema
+userSchema.methods.getJWT =  async function () {
+    const user = this;
+    const token = await jwt.sign({_id:user._id}, "DevTinder", {expiresIn:"1d"});//expires in 1day
+    return token;
+}
+
+userSchema.methods.isActualPassword = async function(passwordProvidedAsInput) { 
+    const user = this;
+    const isMatched = await bcrypt.compare(passwordProvidedAsInput, user.password);
+    return isMatched;
+}
 
 const User = mongoose.model("User", userSchema);
 
