@@ -16,3 +16,6 @@ app.use(express.json()) is middleware to convert the Json data to Js Obj and app
 
 any other data which is not in the schema will gets ignored by the API's
 NEVER TRUST req.body
+
+Whenever you are writing the schema function don't use arrow function 
+when we use unique = true it will automatically creates a index in DB for efficient search
