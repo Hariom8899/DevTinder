@@ -19,7 +19,7 @@ requestRouter.post('/request/send/:status/:userId', authUser, async (req, res) =
   if(!user){
     return res.status(400).json({message: 'No Such User Exists in DB'});
   }
-  console.log(user);
+  // console.log(user);
   const isRequestAlreadyPresent = await ConnectionRequest.findOne(
     {$or:[
     {fromUserId, toUserId},
@@ -35,12 +35,44 @@ requestRouter.post('/request/send/:status/:userId', authUser, async (req, res) =
     status,
   })
   const data = await connectionRequest.save();
-  console.log(user.firstName);
   res.send(req.user.firstName + ' has send the connection request to ' + user.firstName);
 }
 catch(err){
   res.status(400).send('Error: ' + err.message);
 }
+})
+
+requestRouter.post('/request/review/:status/:id', authUser, async (req, res) => {
+  try{
+  const { status, id } = req.params;
+  const loggedinUser = req.user;
+  
+  const allowedStatus = ["accepted", "rejected"];
+  if(!allowedStatus.includes(status)){
+    return res.status(400).json({message:"Invalid Status"});
+  }
+
+  const data = await ConnectionRequest.findOne({
+    _id:id,
+    toUserId: loggedinUser._id,
+    status: "interested",
+  })
+
+  if(!data){
+    return res.status(400).json({message:"No Such request exists in DB"});
+  }
+
+  data.status = status;
+  data.save();
+  res.json({
+    message:'Requested has been accepted successfully',
+     data,
+  })
+  }
+  catch(err){
+    res.status(400).send('Error: ' + err.message);
+  }
+
 })
 
 module.exports = requestRouter;
