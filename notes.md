@@ -19,3 +19,6 @@ NEVER TRUST req.body
 
 Whenever you are writing the schema function don't use arrow function 
 when we use unique = true it will automatically creates a index in DB for efficient search
+
+$nin not in 
+$ne not equals
